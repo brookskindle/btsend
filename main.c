@@ -7,16 +7,22 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
+#include <stdbool.h>
 #include <ncurses.h>
 
+#define EXIT_KEY '\3'
+#define NOOP_KEY 'x'
+
 int main(void) {
-	char ch = 0,
-		 *devname = "/dev/tty2";
+	char ch = '\0';
+	bool done = false;
+	const char *devname = "/dev/tty1";
 	FILE *dev = NULL;
 
 	dev = fopen(devname, "w");
 	if(!dev) { //unable to open terminal
-		fprintf(stderr, "Unable to open %s..quitting\n", devname);
+		fprintf(stderr, "Unable to open %s for writing..quitting\n", devname);
 	}
 	////////////////
 	//init ncurses//
@@ -24,21 +30,38 @@ int main(void) {
 	initscr();
 	raw();
 	noecho(); //prevent echoing user input
+	timeout(250); //don't block on user input
 
 	printw("Welcome to BTSEND...");
 	printw("Press Ctrl-C to exit\n");
-	
-	ch = getch();
-	while(ch != '\3') { //loop until Ctrl-C entered
-		fprintf(dev, "%c", ch); //send user input
-		printw("%c", ch);
-		refresh(); //refresh screen so characters display
-		ch = getch(); //get user input
+	refresh();
+	sleep(1);
+	while(!done) {
+		ch = getch();
+		clear();
+		printw("Welcome to BTSEND...");
+		printw("Press Ctrl-C to exit\n");
+		printw("====================\n");
+		refresh();
+		switch(ch) {
+			case EXIT_KEY:			//user wishes to quit
+				done = true;
+				break;
+			case ERR:				//no key pressed (-1)
+				ch = NOOP_KEY;		//send a predefined no-op key
+				printw("No key pressed, sending no-op key\n");
+			default:				//regular key pressed
+				printw("Sending key '%c'\n", ch);
+				fprintf(dev, "%c", ch); //send user input
+				refresh();
+				break;
+		}
 	}//end while
-
+	clear();
 	printw("Thank you for using btsend.\n");
 	printw("Press <any> key to continue.\n");
 	refresh();
+	timeout(-1);
 	getch();
 	endwin();
 	return 0;

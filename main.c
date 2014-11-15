@@ -14,15 +14,23 @@
 #define EXIT_KEY '\3'
 #define NOOP_KEY 'x'
 
-int main(void) {
+int main(int argc, char **argv) {
 	char ch = '\0';
 	bool done = false;
-	const char *devname = "/dev/tty1";
+	const char *devname = NULL;
 	FILE *dev = NULL;
 
+	if(argc != 2) {
+		fprintf(stdout, "Usage: %s device_name\n", argv[0]);
+		fprintf(stdout, "device_name, for example, can be /dev/tty1\n");
+		return 1;
+	}
+
+	devname = argv[1];
 	dev = fopen(devname, "w");
 	if(!dev) { //unable to open terminal
-		fprintf(stderr, "Unable to open %s for writing..quitting\n", devname);
+		fprintf(stderr, "Fatal: unable to open %s for writing\n", devname);
+		return 1;
 	}
 	////////////////
 	//init ncurses//
@@ -30,7 +38,7 @@ int main(void) {
 	initscr();
 	raw();
 	noecho(); //prevent echoing user input
-	timeout(250); //don't block on user input
+	timeout(250); //don't block on user input (wait 1/4 of a second for input)
 
 	printw("Welcome to BTSEND...");
 	printw("Press Ctrl-C to exit\n");

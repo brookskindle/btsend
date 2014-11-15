@@ -12,7 +12,7 @@
 #include <ncurses.h>
 
 #define EXIT_KEY '\3'
-#define NOOP_KEY 'x'
+#define NOOP_KEY ' '
 
 int main(int argc, char **argv) {
 	char ch = '\0';

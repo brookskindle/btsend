@@ -5,21 +5,25 @@ A delicious way to send key presses through bluetooth.
 
 Program Information
 ===================
-Version: 0.1
+###Version:
+v0.1
 
-Dependencies:
+###Dependencies:
 * ncurses library
 
 ###How to install:
 You can install btsend in just three steps:
-1 Clone repository
-2 cd into the new project directory
-3 type "make" - this will create the program.
+1. Clone repository
+2. cd into the new project directory
+3. type "make" - this will create the program.
 
 For those who enjoy copy-paste, open up a terminal and type:
-* git clone https://github.com/brookskindle/btsend.git
-* cd btsend
-* make
+
+```
+git clone https://github.com/brookskindle/btsend.git
+cd btsend
+make
+```
 
 ###Bugs
 If you find a bug, please submit it as an issue on the github project page.

@@ -27,4 +27,5 @@ make
 ```
 
 ###Bugs
-If you find a bug, please submit it as an issue on the github project page.
+If you find a bug, please open an issue on the github project page after you
+have verified that there is not already an existing issue for that same bug.

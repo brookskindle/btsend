@@ -13,8 +13,11 @@ v0.1
 
 ###How to install:
 You can install btsend in just three steps:
+
 1. Clone repository
+
 2. cd into the new project directory
+
 3. type "make" - this will create the program.
 
 For those who enjoy copy-paste, open up a terminal and type:

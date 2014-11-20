@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Fatal: unable to open %s for writing\n", devname);
 		return 1;
 	}
+	setbuf(dev, 0); //prevent dev from buffering
 	////////////////
 	//init ncurses//
 	////////////////
@@ -61,7 +62,6 @@ int main(int argc, char **argv) {
 			default:				//regular key pressed
 				printw("Sending key '%c'\n", ch);
 				fprintf(dev, "%c", ch); //send user input
-				fflush(dev); //flush buffer so that input is sent immediately
 				refresh();
 				break;
 		}
